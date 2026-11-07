@@ -1,17 +1,13 @@
-
 import requests
 import pandas as pd
 
-
 NASA_POWER_URL = "https://power.larc.nasa.gov/api/temporal/daily/point"
-
 
 def get_climate_data(latitude, longitude, start_date, end_date):
     """
     Fetch daily temperature and precipitation data
     from NASA POWER for a given location.
     """
-
     params = {
         "parameters": "T2M,PRECTOTCORR",
         "community": "AG",
@@ -28,11 +24,8 @@ def get_climate_data(latitude, longitude, start_date, end_date):
         params=params,
         timeout=30
     )
-
     response.raise_for_status()
-
     data = response.json()
-
     climate_parameters = (
         data.get("properties", {})
         .get("parameter", {})
@@ -59,5 +52,4 @@ def get_climate_data(latitude, longitude, start_date, end_date):
 
     # NASA POWER uses -999 as a missing-data value.
     df = df.replace(-999, float("nan"))
-
     return df
